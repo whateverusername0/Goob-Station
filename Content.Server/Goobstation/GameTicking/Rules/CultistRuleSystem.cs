@@ -86,7 +86,7 @@ public sealed partial class CultistRuleSystem : GameRuleSystem<CultistRuleCompon
         if (HasComp<MindShieldComponent>(uid) && force)
             RemCompDeferred<MindShieldComponent>(uid);
 
-        _antag.SendBriefing(uid, "\n" + Loc.GetString("cultist-role-greeting"), Color.DarkRed, comp.BriefingSound);
+        _antag.SendBriefing(uid, "\n" + Loc.GetString("cultist-role-greeting"), Color.Crimson, comp.BriefingSound);
         comp.Cultists.Add(mindId);
 
         _roleSystem.MindAddRole(mindId, new RoleBriefingComponent

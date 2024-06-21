@@ -18,9 +18,6 @@ public sealed class CultistSystem : SharedCultistSystem
 
     private void GetStatusIcon(Entity<CultistComponent> ent, ref GetStatusIconsEvent args)
     {
-        if (HasComp<CultistComponent>(ent))
-            return;
-
         if (_prototype.TryIndex(ent.Comp.StatusIcon, out var iconPrototype))
             args.StatusIcons.Add(iconPrototype);
     }
