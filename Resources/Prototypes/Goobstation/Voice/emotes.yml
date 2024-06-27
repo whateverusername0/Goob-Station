@@ -1,0 +1,17 @@
+- type: emote
+  id: Flip
+  name: Flip
+  category: Hands
+  whitelist:
+    components:
+    - Body
+  chatTriggers:
+    - flip
+    - flip.
+    - flip!
+    - flips
+    - flips.
+    - flips!
+    - does a flip
+    - does a flip.
+    - does a flip!
