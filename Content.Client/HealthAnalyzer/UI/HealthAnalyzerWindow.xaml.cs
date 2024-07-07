@@ -63,10 +63,6 @@ namespace Content.Client.HealthAnalyzer.UI
             {
                 entityName = Identity.Name(target.Value, _entityManager);
             }
-            if(_entityManager.HasComponent<ChangelingComponent>(target))
-            {
-                entityName = Loc.GetString("Changling Detected");
-            }
 
             if (msg.ScanMode.HasValue)
             {
@@ -79,10 +75,18 @@ namespace Content.Client.HealthAnalyzer.UI
                 ScanModePanel.Visible = false;
             }
 
-            PatientName.Text = Loc.GetString(
-                "health-analyzer-window-entity-health-text",
-                ("entityName", entityName)
-            );
+             if(_entityManager.HasComponent<ChangelingComponent>(target))
+            {
+                PatientName.Text = Loc.GetString(
+                    "Changeling Detected");
+                PatientName.FontColorOverride = Color.Red;
+            }
+            else{
+                PatientName.Text = Loc.GetString(
+                    "health-analyzer-window-entity-health-text",
+                    ("entityName", entityName));
+                PatientName.FontColorOverride = Color.White;
+            }
 
             Temperature.Text = Loc.GetString("health-analyzer-window-entity-temperature-text",
                 ("temperature", float.IsNaN(msg.Temperature) ? "N/A" : $"{msg.Temperature - Atmospherics.T0C:F1} °C ({msg.Temperature:F1} K)")
