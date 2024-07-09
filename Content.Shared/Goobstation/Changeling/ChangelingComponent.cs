@@ -116,6 +116,12 @@ public sealed partial class ChangelingComponent : Component
     [ViewVariables(VVAccess.ReadOnly)]
     public int TotalStolenDNA = 0;
 
+    /// <summary>
+    ///     Index of dna's that have been stolen
+    /// </summary>
+    [ViewVariables(VVAccess.ReadOnly)]
+    public List<TransformData> AbsorbedDNAHistory = new();
+
     [ViewVariables(VVAccess.ReadOnly)]
     public TransformData? CurrentForm;
 
