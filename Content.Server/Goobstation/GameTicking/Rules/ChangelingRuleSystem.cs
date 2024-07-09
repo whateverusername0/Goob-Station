@@ -21,6 +21,7 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
     [Dependency] private readonly MindSystem _mind = default!;
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
     [Dependency] private readonly SharedRoleSystem _role = default!;
+    [Dependency] private readonly RoleSystem _roleSystem = default!;
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
     [Dependency] private readonly ObjectivesSystem _objective = default!;
 
@@ -58,9 +59,9 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
         var briefingShort = Loc.GetString("changeling-role-greeting-short", ("name", metaData?.EntityName ?? "Unknown"));
 
         _antag.SendBriefing(target, briefing, Color.Yellow, BriefingSound);
-
-        _role.MindAddRole(mindId, new RoleBriefingComponent { Briefing = briefingShort }, mind, true);
-
+        if (_roleSystem.MindGetBriefing(mindId)==null){
+            _role.MindAddRole(mindId, new RoleBriefingComponent { Briefing = briefingShort }, mind, true);
+        }
         // hivemind stuff
         _npcFaction.RemoveFaction(target, NanotrasenFactionId, false);
         _npcFaction.AddFaction(target, ChangelingFactionId);
@@ -70,13 +71,18 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
         lingComp.Chemicals = lingComp.MaxChemicals;
 
         // add store
+
         var store = EnsureComp<StoreComponent>(target);
         foreach (var category in rule.StoreCategories)
             store.Categories.Add(category);
         store.CurrencyWhitelist.Add(Currency);
-        store.Balance.Add(Currency, 16);
+
+        try {store.Balance.Add(Currency, 16);}
+        catch(System.ArgumentException){}
+
 
         rule.ChangelingMinds.Add(mindId);
+
 
         foreach (var objective in rule.Objectives)
             _mind.TryAddObjective(mindId, mind, objective);
