@@ -59,9 +59,8 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
         var briefingShort = Loc.GetString("changeling-role-greeting-short", ("name", metaData?.EntityName ?? "Unknown"));
 
         _antag.SendBriefing(target, briefing, Color.Yellow, BriefingSound);
-        if (_roleSystem.MindGetBriefing(mindId)==null){
-            _role.MindAddRole(mindId, new RoleBriefingComponent { Briefing = briefingShort }, mind, true);
-        }
+        _role.MindAddRole(mindId, new RoleBriefingComponent { Briefing = briefingShort }, mind, true);
+
         // hivemind stuff
         _npcFaction.RemoveFaction(target, NanotrasenFactionId, false);
         _npcFaction.AddFaction(target, ChangelingFactionId);
@@ -76,9 +75,8 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
         foreach (var category in rule.StoreCategories)
             store.Categories.Add(category);
         store.CurrencyWhitelist.Add(Currency);
+        store.Balance.Add(Currency, 16);
 
-        try {store.Balance.Add(Currency, 16);}
-        catch(System.ArgumentException){}
 
 
         rule.ChangelingMinds.Add(mindId);
