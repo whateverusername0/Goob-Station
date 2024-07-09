@@ -367,7 +367,7 @@ public sealed partial class ChangelingSystem : EntitySystem
             data.Fingerprint = fingerprint.Fingerprint;
 
         AddDNA(uid, comp, data, countObjective);
-
+        comp.TotalStolenDNA++;
         return true;
     }
 
@@ -417,7 +417,11 @@ public sealed partial class ChangelingSystem : EntitySystem
             var newLingComp = Comp<ChangelingComponent>(newUid.Value);
 
             newLingComp.AbsorbedDNA = comp.AbsorbedDNA;
-            newLingComp.CurrentForm = data != null ? data : newLingComp.CurrentForm;
+            if(comp.TotalAbsorbedEntities!=null)
+                newLingComp.TotalAbsorbedEntities = comp.TotalAbsorbedEntities;
+            if(comp.TotalStolenDNA!=null)
+                newLingComp.TotalStolenDNA = comp.TotalStolenDNA;
+            newLingComp.CurrentForm = data;
             newLingComp.IsInLesserForm = false;
             if (!persistentDna && data != null)
                 newLingComp.AbsorbedDNA.Remove(data);
@@ -585,9 +589,10 @@ public sealed partial class ChangelingSystem : EntitySystem
             bonusChemicals += 10;
             bonusEvolutionPoints += 2;
         }
-        TryStealDNA(uid, target, comp, true);
+
         comp.TotalAbsorbedEntities++;
-        comp.TotalStolenDNA++;
+        TryStealDNA(uid, target, comp, true);
+
 
         _popup.PopupEntity(popup, args.User, args.User);
         comp.MaxChemicals += bonusChemicals;
@@ -614,8 +619,15 @@ public sealed partial class ChangelingSystem : EntitySystem
             _popup.PopupEntity(Loc.GetString("changeling-sting-extract-fail"), uid, uid);
             // royal cashback
             comp.Chemicals += Comp<ChangelingActionComponent>(args.Action).ChemicalCost;
+
         }
-        else _popup.PopupEntity(Loc.GetString("changeling-sting", ("target", Identity.Entity(target, EntityManager))), uid, uid);
+        else
+        {
+
+             _popup.PopupEntity(Loc.GetString("changeling-sting", ("target", Identity.Entity(target, EntityManager))), uid, uid);
+        }
+
+
     }
 
     private void OnTransformCycle(EntityUid uid, ChangelingComponent comp, ref ChangelingTransformCycleEvent args)
@@ -1012,9 +1024,19 @@ public sealed partial class ChangelingSystem : EntitySystem
     {
         if (!TryUseAbility(uid, comp, args))
             return;
+        //is reptile?
 
         var newUid = TransformEntity(uid, protoId: "MobMonkey", comp: comp);
         if (newUid == null)
+            return;
+
+        RemCompDeferred<PolymorphedEntityComponent>(newUid.Value);
+
+        // copy our stuff
+        var lingCompCopy = _serialization.CreateCopy(comp, notNullableOverride: true);
+        NewMethod(newUid, lingCompCopy);
+
+        if (TryComp<StoreComponent>(uid, out var storeComp))
         {
             comp.Chemicals += Comp<ChangelingActionComponent>(args.Action).ChemicalCost;
             return;
@@ -1025,6 +1047,12 @@ public sealed partial class ChangelingSystem : EntitySystem
         _popup.PopupEntity(loc, (EntityUid) newUid, PopupType.LargeCaution);
 
         comp.IsInLesserForm = true;
+
+        void NewMethod(EntityUid? newUid, ChangelingComponent lingCompCopy)
+        {
+            if(newUid==null) return;
+            AddComp(newUid.Value, lingCompCopy, true);
+        }
     }
     public void OnSpacesuit(EntityUid uid, ChangelingComponent comp, ref ActionSpacesuitEvent args)
     {
