@@ -21,7 +21,6 @@ public sealed partial class ChangelingRuleSystem : GameRuleSystem<ChangelingRule
     [Dependency] private readonly MindSystem _mind = default!;
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
     [Dependency] private readonly SharedRoleSystem _role = default!;
-    [Dependency] private readonly RoleSystem _roleSystem = default!;
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
     [Dependency] private readonly ObjectivesSystem _objective = default!;
 
