@@ -421,9 +421,8 @@ public sealed partial class ChangelingSystem : EntitySystem
             AddComp(newUid.Value, lingCompCopy, true);
             var newLingComp = Comp<ChangelingComponent>(newUid.Value);
 
-            newLingComp.TotalStolenDNA = comp.TotalStolenDNA;
-            newLingComp.TotalAbsorbedEntities = comp.TotalAbsorbedEntities;
-            newLingComp.AbsorbedDNA = comp.AbsorbedDNA;
+            TransferLingComp(comp,newLingComp);
+
             newLingComp.CurrentForm = data;
             if (!persistentDna)
                 newLingComp.AbsorbedDNA.Remove(data); // a one timer opportunity.
@@ -1046,6 +1045,7 @@ public sealed partial class ChangelingSystem : EntitySystem
         // copy our stuff
         var lingCompCopy = _serialization.CreateCopy(comp, notNullableOverride: true);
         AddComp(newUid.Value, lingCompCopy, true);
+        TransferLingComp(comp,Comp<ChangelingComponent>(newUid.Value));
 
         if (TryComp<StoreComponent>(uid, out var storeComp))
         {
@@ -1096,6 +1096,17 @@ public sealed partial class ChangelingSystem : EntitySystem
         }
         // MobMask MobLayer
         // SmallMobMask SmallMobLayer
+    }
+
+    public void TransferLingComp(ChangelingComponent comp, ChangelingComponent newComp)
+    {
+        if(comp==null)
+            return;
+        newComp.TotalStolenDNA = comp.TotalStolenDNA;
+        newComp.TotalAbsorbedEntities = comp.TotalAbsorbedEntities;
+        newComp.AbsorbedDNA = comp.AbsorbedDNA;
+
+
     }
 
     #endregion
