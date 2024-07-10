@@ -1,8 +1,11 @@
 using Content.Shared.Humanoid;
+using Content.Shared.StatusIcon;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+
+
 
 namespace Content.Shared.Changeling;
 
@@ -39,24 +42,14 @@ public sealed partial class ChangelingComponent : Component
 
     public bool IsInStasis = false;
 
-    public ProtoId<EntityPrototype> ArmbladePrototype = "ArmBladeChangeling";
-    public ProtoId<EntityPrototype> FakeArmbladePrototype = "FakeArmBladeChangeling";
     public EntityUid? ArmbladeEntity;
-
-    public ProtoId<EntityPrototype> ShieldPrototype = "ChangelingShield";
     public EntityUid? ShieldEntity;
-
-    public ProtoId<EntityPrototype> BoneShardPrototype = "ThrowingStarChangeling";
-
-    public ProtoId<EntityPrototype> ArmorPrototype = "ChangelingClothingOuterArmor";
-    public ProtoId<EntityPrototype> ArmorHelmetPrototype = "ChangelingClothingHeadHelmet";
     public EntityUid? ArmorEntity, ArmorHelmetEntity;
-
-    public ProtoId<EntityPrototype> SpacesuitPrototype = "ChangelingClothingOuterHardsuit";
-    public ProtoId<EntityPrototype> SpacesuitHelmetPrototype = "ChangelingClothingHeadHelmetHardsuit";
     public EntityUid? SpacesuitEntity, SpacesuitHelmetEntity;
 
     public bool StrainedMusclesActivated = false;
+
+    public bool IsInLesserForm = false;
 
     #endregion
 
@@ -129,6 +122,12 @@ public sealed partial class ChangelingComponent : Component
     public TransformData? SelectedForm;
 
     #endregion
+    /// <summary>
+    /// The status icon corresponding to the Changlings.
+    /// </summary>
+
+    [DataField, ViewVariables(VVAccess.ReadWrite)]
+    public ProtoId<StatusIconPrototype> StatusIcon { get; set; } = "HivemindFaction";
 }
 
 [DataDefinition]
@@ -162,4 +161,7 @@ public partial struct TransformData
         => one.Name == two.Name && one.Fingerprint == two.Fingerprint && one.DNA == two.DNA;
     public static bool operator !=(TransformData one, TransformData two)
         => !(one.Name == two.Name && one.Fingerprint == two.Fingerprint && one.DNA == two.DNA);
+
+
+
 }
