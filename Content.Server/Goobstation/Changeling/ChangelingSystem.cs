@@ -483,6 +483,16 @@ public sealed partial class ChangelingSystem : EntitySystem
 
         return true;
     }
+    public void TransferLingComp(ChangelingComponent comp, ChangelingComponent newComp)
+    {
+        if(comp==null||newComp==null)
+            return;
+        newComp.TotalStolenDNA = comp.TotalStolenDNA;
+        newComp.TotalAbsorbedEntities = comp.TotalAbsorbedEntities;
+        newComp.AbsorbedDNA = comp.AbsorbedDNA;
+        newComp.AbsorbedDNAHistory = comp.AbsorbedDNAHistory;
+        AddComp(newComp, comp, true);
+    }
 
     #endregion
 
@@ -1108,15 +1118,6 @@ public sealed partial class ChangelingSystem : EntitySystem
         // SmallMobMask SmallMobLayer
     }
 
-    public void TransferLingComp(ChangelingComponent comp, ChangelingComponent newComp)
-    {
-        if(comp==null)
-            return;
-        newComp.TotalStolenDNA = comp.TotalStolenDNA;
-        newComp.TotalAbsorbedEntities = comp.TotalAbsorbedEntities;
-        newComp.AbsorbedDNA = comp.AbsorbedDNA;
-        newComp.AbsorbedDNAHistory = comp.AbsorbedDNAHistory;
-    }
 
     #endregion
 }
