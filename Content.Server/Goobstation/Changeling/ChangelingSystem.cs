@@ -325,9 +325,18 @@ public sealed partial class ChangelingSystem : EntitySystem
 
         return true;
     }
-
-    public void AddDNA(EntityUid uid, ChangelingComponent comp, TransformData data, bool countObjective = false)
+    public bool DNAHistory(EntityUid uid, ChangelingComponent comp, TransformData data)//AbsorbedDNAHistory
     {
+        foreach (var storedDNA in comp.AbsorbedDNAHistory)
+        {
+            if ((storedDNA.DNA != null) && storedDNA.DNA == data.DNA)
+                return false;
+        }
+        comp.AbsorbedDNAHistory.Add(data);
+        return true;
+    }
+    public void AddDNA(EntityUid uid, ChangelingComponent comp, TransformData data, bool countObjective = false)
+        {
         if (comp.AbsorbedDNA.Count >= comp.MaxAbsorbedDNA)
         {
             comp.AbsorbedDNA.RemoveAt(0);
@@ -340,6 +349,7 @@ public sealed partial class ChangelingSystem : EntitySystem
             if (_mind.TryGetMind(uid, out var mindId, out var mind))
                 if (_mind.TryGetObjectiveComp<StealDNAConditionComponent>(mindId, out var objective, mind))
                     objective.DNAStolen += 1;
+                    comp.TotalStolenDNA++;
         }
     }
     public bool TryStealDNA(EntityUid uid, EntityUid target, ChangelingComponent comp, bool countObjective = false)
@@ -366,7 +376,7 @@ public sealed partial class ChangelingSystem : EntitySystem
         if (fingerprint.Fingerprint != null)
             data.Fingerprint = fingerprint.Fingerprint;
 
-        AddDNA(uid, comp, data, countObjective);
+        AddDNA(uid, comp, data, DNAHistory(uid, comp, data));
 
         return true;
     }
@@ -450,6 +460,8 @@ public sealed partial class ChangelingSystem : EntitySystem
             EnsureComp<HeadRevolutionaryComponent>(newEnt);
         if (HasComp<RevolutionaryComponent>(uid))
             EnsureComp<RevolutionaryComponent>(newEnt);
+        if (HasComp<MindShieldComponent>(uid) && KeepMindshieldOnTransform)
+             EnsureComp<MindShieldComponent>(newEnt);
 
         QueueDel(uid);
 
@@ -586,7 +598,6 @@ public sealed partial class ChangelingSystem : EntitySystem
         }
         TryStealDNA(uid, target, comp, true);
         comp.TotalAbsorbedEntities++;
-        comp.TotalStolenDNA++;
 
         _popup.PopupEntity(popup, args.User, args.User);
         comp.MaxChemicals += bonusChemicals;
@@ -870,8 +881,12 @@ public sealed partial class ChangelingSystem : EntitySystem
     {
         if (!TrySting(uid, comp, args, true))
             return;
-
         var target = args.Target;
+        if(!HasComp<HumanoidAppearanceComponent>(target) && !comp.TransformStingOnAnimals )
+        {
+            _popup.PopupEntity(Loc.GetString("changeling-sting-fail-annimal"),uid);
+            return;
+        }
         if (!TryTransform(target, comp, true, true))
             comp.Chemicals += Comp<ChangelingActionComponent>(args.Action).ChemicalCost;
     }
