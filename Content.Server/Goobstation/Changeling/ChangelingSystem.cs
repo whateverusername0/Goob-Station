@@ -460,7 +460,7 @@ public sealed partial class ChangelingSystem : EntitySystem
             EnsureComp<HeadRevolutionaryComponent>(newEnt);
         if (HasComp<RevolutionaryComponent>(uid))
             EnsureComp<RevolutionaryComponent>(newEnt);
-        if (HasComp<MindShieldComponent>(uid) && KeepMindshieldOnTransform)
+        if (HasComp<MindShieldComponent>(uid) && comp.KeepMindshieldOnTransform)
              EnsureComp<MindShieldComponent>(newEnt);
 
         QueueDel(uid);

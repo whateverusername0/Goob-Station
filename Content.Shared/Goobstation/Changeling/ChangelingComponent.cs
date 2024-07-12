@@ -120,6 +120,11 @@ public sealed partial class ChangelingComponent : Component
     ///     Transformation sting work on Animals
     /// </summary>
     public bool TransformStingOnAnimals = true;
+    /// <summary>
+    ///     Mindshield dissapere when transfroming
+    /// </summary>
+    public bool KeepMindshieldOnTransform = true;
+
 }
 
 [DataDefinition]
