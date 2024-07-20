@@ -57,6 +57,7 @@ using System.Numerics;
 using Content.Shared.Camera;
 using Robust.Shared.Timing;
 using Content.Shared.Gravity;
+using Content.Server.Body.Components;
 using Content.Shared.Damage.Components;
 using Content.Server.Gravity;
 
@@ -471,6 +472,7 @@ public sealed partial class ChangelingSystem : EntitySystem
                 RemComp<StoreComponent>(newUid.Value);
                 EntityManager.AddComponent(newUid.Value, storeCompCopy);
             }
+            ChangeChangelingBloodtype(uid,newEnt);
         }
 
         // exceptional comps check
@@ -534,6 +536,7 @@ public sealed partial class ChangelingSystem : EntitySystem
         RemComp<HungerComponent>(uid);
         RemComp<ThirstComponent>(uid);
         EnsureComp<ZombieImmuneComponent>(uid);
+        ChangeChangelingBloodtype(uid,uid);
 
         // add actions
         foreach (var actionId in comp.BaseChangelingActions)
@@ -845,6 +848,32 @@ public sealed partial class ChangelingSystem : EntitySystem
         }
 
         PlayMeatySound(uid, comp);
+    }
+    public void ChangeChangelingBloodtype(EntityUid uid,EntityUid newUid)
+    {
+        if(newUid==null)
+            return;
+        if(!HasComp<BloodstreamComponent>(newUid))
+            return;
+
+        if (TryComp<BloodstreamComponent>(newUid, out var stream))
+        {
+            var  bloodtype = stream.BloodReagent;
+            switch((String)stream.BloodReagent)
+            {
+                case "Blood": bloodtype = "changelingBlood";                //Human Dwarf Moth  Reptile
+                    break;
+                case "Slime": bloodtype = "changelingSlime";                //Slime
+                    break;
+                case "Sap": bloodtype = "changelingSap";                    //Diona
+                    break;
+                case  "CopperBlood": bloodtype = "changelingCopperBlood";   //Aracnid
+                    break;
+                case "AmmoniaBlood": bloodtype = "changelingAmmoniaBlood";  //Vox
+                    break;
+            }
+            _blood.ChangeBloodReagent(newUid, bloodtype);
+        }
     }
 
     #endregion
