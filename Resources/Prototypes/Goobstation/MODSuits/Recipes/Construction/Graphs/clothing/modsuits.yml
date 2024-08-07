@@ -1,0 +1,84 @@
+# construction graphs
+- type: constructionGraph
+  id: MODSuit
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: modsuit
+      steps:
+      - tag: MODSuitCore
+        name: MODSuit core
+        icon:
+          sprite: "Goobstation/MODSuits/modsuit_construction.rsi"
+          state: "core_standard"
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 1
+      - tool: Screwing
+        doAfter: 1
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 2
+      - tag: MODSuitHelmet
+        name: helmet
+        icon:
+          sprite: "Goobstation/MODSuits/modsuit_construction.rsi"
+          state: "helmet"
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 3
+      - tag: MODSuitChestplate
+        name: chestplate
+        icon:
+          sprite: "Goobstation/MODSuits/modsuit_construction.rsi"
+          state: "chestplate"
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 4
+      - tag: MODSuitGauntlets
+        name: gauntlets
+        icon:
+          sprite: "Goobstation/MODSuits/modsuit_construction.rsi"
+          state: "gauntlets"
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 5
+      - tag: MODSuitBoots
+        name: boots
+        icon:
+          sprite: "Goobstation/MODSuits/modsuit_construction.rsi"
+          state: "boots"
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 6
+      - tool: Anchoring
+        doAfter: 1
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 7
+      - tool: Screwing
+        doAfter: 1
+        completed:
+        - !type:VisualizerDataInt
+          key: "enum.MODSuitVisualLayers.State"
+          data: 8
+      - tag: MODSuitPlating
+        name: plating
+        doAfter: 3
+        icon:
+          sprite: "Goobstation/MODSuits/modsuit_construction.rsi"
+          state: "plating_standard"
+
+  - node: modsuit
+    actions:
+    - !type:SpawnPrototype
+      prototype: MODSuitStandard
+    - !type:DeleteEntity

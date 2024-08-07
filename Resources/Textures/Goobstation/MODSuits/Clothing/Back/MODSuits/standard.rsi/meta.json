@@ -1,0 +1,28 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from /tg/station",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "icon"
+        },
+        {
+            "name": "icon-sealed",
+            "delays": [
+                [ 0.1, 0.1, 0.1, 0.1 ]
+            ]
+        },
+        {
+            "name": "off-equipped-BACKPACK",
+            "directions": 4
+        },
+        {
+            "name": "on-equipped-BACKPACK",
+            "directions": 4
+        }
+    ]
+}

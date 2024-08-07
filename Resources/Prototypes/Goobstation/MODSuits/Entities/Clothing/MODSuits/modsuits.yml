@@ -1,0 +1,31 @@
+- type: entity
+  parent: BaseItem
+  id: MODSuitStandard
+  suffix: standard
+  name: modular suit
+  description: A specialized back mounted power suit with various different modules.
+  components:
+  - type: MODSuit
+    maxModuleComplexity: 15
+  - type: Item
+    size: Huge
+  - type: Sprite
+    sprite: Goobstation/MODSuits/Clothing/Back/MODSuits/standard.rsi
+    layers:
+    - state: icon
+    - state: icon-sealed
+      visible: false
+      map: [ "light" ]
+  - type: Clothing
+    equippedPrefix: off
+    quickEquip: false
+    slots:
+    - back
+  - type: ContainerContainer
+    containers:
+      cell_slot: !type:ContainerSlot
+      modules: !type:Container
+  - type: PowerCellSlot
+    cellSlotId: cell_slot
+
+# todo: add parts

@@ -1,0 +1,97 @@
+- type: entity
+  parent: BaseItem
+  id: MODSuitConstructionShell
+  suffix: construction
+  name: modular suit shell
+  components:
+  - type: Sprite
+    sprite: Goobstation/MODSuits/modsuit_construction.rsi
+    layers:
+    - map: [ "enum.MODSuitVisualLayers.Base" ]
+      state: mod
+  - type: Construction
+    graph: MODSuit
+    node: start
+    defaultTarget: modsuit
+    containers:
+    - parts
+  - type: ContainerContainer
+    parts: !type:Container
+
+- type: entity
+  parent: BaseItem
+  id: MODSuitCore
+  suffix: construction
+  name: modular suit core
+  components:
+  - type: Sprite
+    sprite: Goobstation/MODSuits/modsuit_construction.rsi
+    state: core_standard
+  - type: Tag
+    tags:
+    - MODSuitCore
+
+- type: entity
+  parent: BaseItem
+  id: MODSuitHelmet
+  suffix: construction
+  name: modular suit helmet
+  components:
+  - type: Sprite
+    sprite: Goobstation/MODSuits/modsuit_construction.rsi
+    state: helmet
+  - type: Tag
+    tags:
+    - MODSuitHelmet
+
+- type: entity
+  parent: BaseItem
+  id: MODSuitChestplate
+  suffix: construction
+  name: modular suit chestplate
+  components:
+  - type: Sprite
+    sprite: Goobstation/MODSuits/modsuit_construction.rsi
+    state: chestplate
+  - type: Tag
+    tags:
+    - MODSuitChestplate
+
+- type: entity
+  parent: BaseItem
+  id: MODSuitGauntlets
+  suffix: construction
+  name: modular suit gauntlets
+  components:
+  - type: Sprite
+    sprite: Goobstation/MODSuits/modsuit_construction.rsi
+    state: gauntlets
+  - type: Tag
+    tags:
+    - MODSuitGauntlets
+
+- type: entity
+  parent: BaseItem
+  id: MODSuitBoots
+  suffix: construction
+  name: modular suit boots
+  components:
+  - type: Sprite
+    sprite: Goobstation/MODSuits/modsuit_construction.rsi
+    state: boots
+  - type: Tag
+    tags:
+    - MODSuitBoots
+
+- type: entity
+  parent: BaseItem
+  id: MODSuitPlating
+  suffix: construction
+  name: modular suit plating
+  components:
+  - type: Sprite
+    sprite: Goobstation/MODSuits/modsuit_construction.rsi
+    state: plating_standard
+  - type: Tag
+    tags:
+    - MODSuitPlating

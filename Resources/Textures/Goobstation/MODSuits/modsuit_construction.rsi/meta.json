@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from /tg/station",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "core",
+      "delays": [
+        [
+          1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "core_infinite",
+      "delays": [
+        [
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ]
+      ]
+    },
+    {
+      "name": "core_standard",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "core_ethereal"
+    },
+    {
+      "name": "core_plasma",
+      "delays": [
+        [
+          0.3,
+          0.3,
+          0.3,
+          0.3
+        ]
+      ]
+    },
+    {
+      "name": "mod"
+    },
+    {
+      "name": "mod1",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "mod2",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "mod3"
+    },
+    {
+      "name": "mod4"
+    },
+    {
+      "name": "mod5"
+    },
+    {
+      "name": "mod6"
+    },
+    {
+      "name": "mod7"
+    },
+    {
+      "name": "mod8"
+    },
+    {
+      "name": "chestplate"
+    },
+    {
+      "name": "gauntlets"
+    },
+    {
+      "name": "boots"
+    },
+    {
+      "name": "helmet"
+    },
+    {
+      "name": "plating_standard"
+    },
+    {
+      "name": "plating_civilian"
+    },
+    {
+      "name": "plating_engineering"
+    },
+    {
+      "name": "plating_atmospherics"
+    },
+    {
+      "name": "plating_medical"
+    },
+    {
+      "name": "plating_security"
+    },
+    {
+      "name": "plating_cosmohonk"
+    },
+    {
+      "name": "paintkit"
+    },
+    {
+      "name": "skinapplier"
+    },
+    {
+      "name": "plasma-flower",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "core_plasma-flower",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    }
+  ]
+}
