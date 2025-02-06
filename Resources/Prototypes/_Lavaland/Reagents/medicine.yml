@@ -17,7 +17,6 @@
           groups:
             Burn: -7.5
             Brute: -2.5
-            Asphyxiation: -0.5
           types:
             Bloodloss: -2.5
       - !type:HealthChange
