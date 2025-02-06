@@ -1484,6 +1484,3 @@
       - !type:AdjustReagent
         reagent: MindbreakerToxin
         amount: -3.0
-        
-
-
