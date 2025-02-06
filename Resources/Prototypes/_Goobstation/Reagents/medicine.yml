@@ -111,5 +111,4 @@
         - !type:PopupMessage
             type: Local
             messages: [ "reagent-popup-fleshmend" ]
-            probability: 0.2
-            
+            probability: 0.2    
