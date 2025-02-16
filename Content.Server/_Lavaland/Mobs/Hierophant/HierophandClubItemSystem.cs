@@ -1,11 +1,10 @@
-﻿using Content.Server._Lavaland.Mobs.Hierophant.Components;
-using Content.Server.Actions;
+﻿using Content.Server.Actions;
 using Content.Server.Hands.Systems;
-using Content.Shared._Lavaland.Mobs.Hierophant;
-using Content.Shared._Lavaland.Mobs.Hierophant.Components;
+using Content.Shared._Lavaland.Damage;
 using Content.Shared.Actions;
 using Content.Shared.Coordinates.Helpers;
 using Content.Shared.Popups;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
@@ -16,11 +15,11 @@ namespace Content.Server._Lavaland.Mobs.Hierophant;
 
 public sealed class HierophandClubItemSystem : EntitySystem
 {
-    //[Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly ActionsSystem _actions = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly HandsSystem _hands = default!;
-    [Dependency] private readonly HierophantBehaviorSystem _hierophant = default!;
+    [Dependency] private readonly HierophantSystem _hierophant = default!;
     [Dependency] private readonly IMapManager _mapMan = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
@@ -60,13 +59,13 @@ public sealed class HierophandClubItemSystem : EntitySystem
 
         if (!_hands.IsHolding(user, uid, out _))
         {
-            _popup.PopupClient(Loc.GetString("dash-ability-not-held", ("item", uid)), user, user);
+            _popup.PopupEntity(Loc.GetString("dash-ability-not-held", ("item", uid)), user, user);
             return;
         }
 
         var targetCoords = args.Target.SnapToGrid(EntityManager, _mapMan);
 
-        SpawnHierophantCross(user, targetCoords);
+        SpawnHierophantCross(user, targetCoords, ent.Comp);
 
         args.Handled = true;
     }
@@ -87,7 +86,10 @@ public sealed class HierophandClubItemSystem : EntitySystem
 
         ent.Comp.TeleportMarker = dummy;
 
-        _popup.PopupClient("Teleportation point set", user);
+        _popup.PopupEntity("Teleportation point set.", user);
+
+        AddImmunity(user);
+        _hierophant.SpawnDamageBox(user, 1, false);
 
         args.Handled = true;
     }
@@ -99,7 +101,7 @@ public sealed class HierophandClubItemSystem : EntitySystem
 
         if (ent.Comp.TeleportMarker == null)
         {
-            _popup.PopupClient("Marker is not placed.", args.Performer);
+            _popup.PopupClient("Marker is not placed!", args.Performer, PopupType.MediumCaution);
             return;
         }
 
@@ -111,18 +113,19 @@ public sealed class HierophandClubItemSystem : EntitySystem
         args.Handled = true;
     }
 
-    private void SpawnHierophantCross(EntityUid owner, EntityCoordinates coords)
+    private void SpawnHierophantCross(EntityUid owner, EntityCoordinates coords, HierophantClubItemComponent club)
     {
         AddImmunity(owner);
 
         // shitcode because i dont want to rewrite and break the code again
         var dummy = Spawn(null, coords);
-        _hierophant.SpawnCross(owner, dummy, 5f, 0f);
+        _hierophant.SpawnCross(dummy, club.CrossRange, 0f);
+        _audio.PlayPvs(club.DamageSound, coords, AudioParams.Default.WithMaxDistance(10f));
         QueueDel(dummy);
     }
 
     private void AddImmunity(EntityUid uid, float time = 3f)
     {
-        EnsureComp<HierophantImmunityComponent>(uid).HasImmunityUntil = _timing.CurTime + TimeSpan.FromSeconds(time);
+        EnsureComp<DamageSquareImmunityComponent>(uid).HasImmunityUntil = _timing.CurTime + TimeSpan.FromSeconds(time);
     }
 }
