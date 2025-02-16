@@ -16,7 +16,7 @@
         Blunt: 0.70
         Slash: 0.70
         Piercing: 0.70
-        Heat: 0.90
+        Heat: 0.50 # parity with 13 :) 
         Caustic: 0.50
   - type: ExplosionResistance
     damageCoefficient: 0.50

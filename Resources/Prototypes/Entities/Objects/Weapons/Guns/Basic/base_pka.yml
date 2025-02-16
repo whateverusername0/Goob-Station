@@ -11,6 +11,10 @@
     shape:
     - 0,0,2,1
   # Lavaland Change start
+  - type: WeaponAttachment
+    lightActionPrototype: ActionTogglePKALight
+  - type: PressureDamageChange
+  - type: Multishot
   - type: UpgradeableGun
     whitelist:
       tags:
@@ -55,8 +59,21 @@
     - Belt
   - type: UseDelay
     delay: 1
+    spreadMultiplier: 1.25
   - type: PhysicalComposition #Goobstation - Recycle update
     materialComposition:
       Steel: 250
       Glass: 125
       Silver: 25
+
+# Lavaland Change
+- type: entity
+  id: ActionTogglePKALight
+  name: action-name-toggle-pka-light
+  description: action-description-toggle-pka-light
+  icon: { sprite: Objects/Tools/seclite.rsi, state: seclite }
+  components:
+  - type: InstantAction
+    useDelay: 0.5
+    icon: { sprite: Objects/Tools/seclite.rsi, state: seclite }
+    event: !type:ToggleActionEvent

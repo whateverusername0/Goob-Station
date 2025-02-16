@@ -61,7 +61,7 @@ public sealed class GunUpgradeSystem : EntitySystem
         if (!Resolve(uid, ref slotComp))
             return;
 
-        var slotCount = slotComp.Slots.Count;
+        var slotCount = slotComp.Slots.Keys.Count(slotId => slotId.StartsWith(component.UpgradesContainerId));
         var slotId = $"{component.UpgradesContainerId}-{slotCount + 1}";
         var slot = new ItemSlot
         {
@@ -113,7 +113,8 @@ public sealed class GunUpgradeSystem : EntitySystem
         var currentUpgrades = GetCurrentUpgrades(ent, itemSlots);
 
         // Create a new slot if all current slots are filled
-        if (currentUpgrades.Count + 1 > itemSlots.Slots.Count)
+        if (currentUpgrades.Count + 1 > itemSlots.Slots.Keys.Count(slotId =>
+            slotId.StartsWith(ent.Comp.UpgradesContainerId)))
             CreateNewSlot(ent, ent.Comp);
 
         if (_itemSlots.TryInsertEmpty((ent.Owner, itemSlots), args.Used, args.User, true))
@@ -126,11 +127,12 @@ public sealed class GunUpgradeSystem : EntitySystem
     {
         // TODO: Figure out how to kill the interaction verbs bypassing checks, yet also allowing
         // for non-duplicate popups to the user when they interact without having to do all of this crap twice.
-
+        Logger.Info("OnItemSlotInsertAttemptEvent");
         if (!TryComp<GunUpgradeComponent>(args.Item, out var upgradeComp)
             || !TryComp<ItemSlotsComponent>(ent, out var itemSlots))
             return;
 
+        Logger.Info("OnItemSlotInsertAttemptEvent 2");
         var currentUpgrades = GetCurrentUpgrades(ent, itemSlots);
         var totalCapacityCost = currentUpgrades.Sum(upgrade => upgrade.Comp.CapacityCost);
         if (totalCapacityCost + upgradeComp.CapacityCost > ent.Comp.MaxUpgradeCapacity)
@@ -142,7 +144,6 @@ public sealed class GunUpgradeSystem : EntitySystem
         var allowDupes = _config.GetCVar(CCVars.AllowDuplicatePkaModules);
         var itemProto = MetaData(args.Item).EntityPrototype?.ID;
         foreach (var itemSlot in itemSlots.Slots.Values)
-
         {
             if (itemSlot.HasItem
                 && itemSlot.Item is { } existingItem

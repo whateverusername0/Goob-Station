@@ -26,7 +26,7 @@
     capacity: 1
     count: 1
   - type: DisarmMalus
-  - type: PressureBuffed
+  - type: PressureDamageChange
   - type: MegafaunaWeaponLooter
 
 - type: entity
@@ -58,7 +58,7 @@
     capacity: 1
     count: 1
   - type: MeleeWeapon
-    attackRate: 1.2
+    attackRate: 0.8
     wideAnimationRotation: -135
     damage:
       types:
@@ -68,23 +68,25 @@
       collection: MetalThud
     angle: 0
     animation: WeaponArcThrust
-    range: 2.6
-  - type: IncreaseDamageOnWield
-    damage:
-      types:
-        Blunt: 3
-        Slash: 1.5
-        Structural: 30
+    range: 2.2
   - type: GunRequiresWield
   - type: Item
     size: Ginormous
     sprite: _Lavaland/Objects/Weapons/Crushers/crusher_spear-inhands.rsi
   - type: DisarmMalus
   - type: Wieldable
-  - type: BackstabDamageMultiplier
-    bonusDamage:
+  - type: Sharp
+  - type: MeleeRequiresWield
+    fumbleOnAttempt: true
+  - type: DamageBoostOnMarker
+    boost:
+      types: # Totals to 60 damage when hitting marked targets
+        Blunt: 31
+        Slash: 14
+    backstabBoost: # And 20 extra for a backstab. Adding up to 80
       types:
-        Slash: 5
+        Blunt: 11
+        Slash: 9
 
 - type: entity
   parent: LavalandWeaponKineticBase
@@ -102,19 +104,12 @@
     wideAnimationRotation: -135
     damage:
       types:
-        Blunt: 10
-        Slash: 5
+        Blunt: 15
     soundHit:
       collection: MetalThud
     angle: 0
     animation: WeaponArcThrust
     range: 1.6
-  - type: IncreaseDamageOnWield
-    damage:
-      types:
-        Blunt: 2.5
-        Slash: 2.5
-        Structural: 30
   - type: Item
     size: Ginormous
     sprite: _Lavaland/Objects/Weapons/Crushers/crusher_hammer-inhands.rsi
@@ -124,12 +119,19 @@
   - type: FlipOnHit
   - type: GunRequiresWield
   - type: Wieldable
+  - type: MeleeRequiresWield
+    fumbleOnAttempt: true
+  - type: DamageBoostOnMarker
+    boost:
+      types: # BLOOD FOR THE BLOOD GOD ITS A FUCKING HAMMER
+        Blunt: 75
+
 
 - type: entity
   parent: LavalandWeaponKineticBase
   id: LavalandWeaponKineticClaws
   name: kinetic claws
-  description: Unleash your inner edgelord with this two-handed claw small enough to fit in your backpack. Deals a paltry 45 damage on mark detonation, but sports a massive 120 damage backstab bonus.
+  description: Unleash your inner edgelord with this one-handed claw small enough to fit in your backpack. Deals a paltry 45 damage on mark detonation, but sports a massive 120 damage backstab bonus.
   components:
   - type: Sprite
     sprite: _Lavaland/Objects/Weapons/Crushers/crusher_claws.rsi
@@ -141,27 +143,25 @@
     wideAnimationRotation: -135
     damage:
       types:
-        Slash: 7.5
+        Slash: 5
     soundHit:
       collection: MetalThud
     angle: 0
     animation: WeaponArcThrust
     range: 1.6
-  - type: IncreaseDamageOnWield
-    damage:
-      types:
-        Blunt: 2.5
-        Slash: 2.5
-        Structural: 30
-  - type: BackstabDamageMultiplier
-    bonusDamage:
-      types:
-        Slash: 7
-  - type: GunRequiresWield
-  - type: Wieldable
   - type: Item
     size: Normal
     sprite: _Lavaland/Objects/Weapons/Crushers/crusher_claws-inhands.rsi
+  - type: Sharp
+  - type: DamageBoostOnMarker
+    boost:
+      types: # Totals to 45 damage when hitting marked targets
+        Slash: 25
+        Blunt: 15
+    backstabBoost: # And 120 extra for a backstab. Adding up to 165!!!
+      types:
+        Slash: 75
+        Blunt: 45
 
 - type: entity
   parent: LavalandWeaponKineticBase
@@ -187,7 +187,31 @@
   - type: Item
     size: Ginormous
     sprite: _Lavaland/Objects/Weapons/Crushers/crusher_machete-inhands.rsi
-  - type: BackstabDamageMultiplier
-    bonusDamage:
+  # too lazy to port parrying and risk a [redacted] lmao
+  - type: Sharp
+  - type: Blocking
+    passiveBlockModifier:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.85
+        Heat: 0.8
+    activeBlockModifier:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.85
+        Heat: 0.8
+  - type: Reflect
+    reflectProb: 0.15
+    reflects:
+      - Energy
+  - type: DamageBoostOnMarker
+    boost:
+      types: # Totals to 50 damage when hitting marked targets
+        Slash: 25
+        Blunt: 10
+    backstabBoost: # And 20 extra for a backstab
       types:
-        Slash: 5
+        Slash: 15
+        Blunt: 5

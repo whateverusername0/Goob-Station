@@ -20,6 +20,15 @@
             ]
         },
         {
+            "name": "bayonet"
+        },
+        {
+            "name": "flight"
+        },
+        {
+            "name": "flight-on"
+        },
+        {
             "name": "inhand-right",
             "directions": 4
         },
