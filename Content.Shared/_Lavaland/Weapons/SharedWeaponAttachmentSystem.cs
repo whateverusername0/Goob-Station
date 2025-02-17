@@ -1,10 +1,14 @@
-using Robust.Shared.Containers;
 using Content.Shared.Actions;
 using Content.Shared.Containers.ItemSlots;
-using Content.Shared.Whitelist;
-using Content.Shared.Light;
-using Content.Shared.Light.Components;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Prototypes;
 using Content.Shared.Hands.Components;
+using Content.Shared.Light.Components;
+using Content.Shared.Weapons.Melee;
+using Content.Shared.Whitelist;
+using Robust.Shared.Containers;
+using Robust.Shared.Prototypes;
+
 namespace Content.Shared._Lavaland.Weapons;
 
 public abstract partial class SharedWeaponAttachmentSystem : EntitySystem
@@ -12,6 +16,7 @@ public abstract partial class SharedWeaponAttachmentSystem : EntitySystem
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly ActionContainerSystem _actionContainer = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
     public override void Initialize()
     {
@@ -100,6 +105,22 @@ public abstract partial class SharedWeaponAttachmentSystem : EntitySystem
             return;
 
         component.BayonetAttached = attached;
+
+        if (attached)
+        {
+            var meleeComp = EnsureComp<MeleeWeaponComponent>(uid);
+            meleeComp.WideAnimationRotation = -90;
+            meleeComp.AttackRate = 1f;
+            meleeComp.Angle = 0;
+            meleeComp.Range = 1.1f;
+            meleeComp.Damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>("Slash"), 12);
+            Dirty(uid, meleeComp);
+        }
+        else
+        {
+            RemComp<MeleeWeaponComponent>(uid);
+        }
+
         Dirty(uid, component);
     }
 
