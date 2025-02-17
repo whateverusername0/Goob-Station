@@ -39,7 +39,10 @@ public abstract class SharedDamageMarkerSystem : EntitySystem
             _damageable.TryChangeDamage(args.User, leech.Leech, true, false, origin: args.Used);
 
         if (HasComp<DamageBoostOnMarkerComponent>(args.Used))
-            RaiseLocalEvent(uid, new ApplyMarkerBonusEvent(args.Used, args.User));
+        {
+            RaiseLocalEvent(uid, new ApplyMarkerBonusEvent(args.Used, args.User)); // For effects on the target
+            RaiseLocalEvent(args.Used, new ApplyMarkerBonusEvent(args.Used, args.User)); // For effects on the weapon
+        }
 
         RemCompDeferred<DamageMarkerComponent>(uid);
     }

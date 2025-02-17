@@ -101,28 +101,29 @@ public abstract partial class SharedWeaponAttachmentSystem : EntitySystem
 
     private void BayonetChanged(EntityUid uid, bool attached, WeaponAttachmentComponent component)
     {
-        if (component.BayonetAttached == attached)
+        if (component.BayonetAttached == attached
+            || !TryComp<MeleeWeaponComponent>(uid, out var meleeComp))
             return;
 
         component.BayonetAttached = attached;
 
         if (attached)
         {
-            var meleeComp = EnsureComp<MeleeWeaponComponent>(uid);
-            meleeComp.WideAnimationRotation = -90;
-            meleeComp.AttackRate = 1f;
-            meleeComp.Angle = 0;
-            meleeComp.Range = 1.1f;
             meleeComp.Damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>("Slash"), 12);
-            Dirty(uid, meleeComp);
+            AddSharp(uid);
         }
         else
         {
-            RemComp<MeleeWeaponComponent>(uid);
+            meleeComp.Damage = new DamageSpecifier(_prototypeManager.Index<DamageTypePrototype>("Blunt"), 5);
+            RemSharp(uid);
         }
 
         Dirty(uid, component);
     }
+
+    // Due to SharpComponent not being shared, we need to override this in the server.
+    protected abstract void AddSharp(EntityUid uid);
+    protected abstract void RemSharp(EntityUid uid);
 
     private void AttachLight(EntityUid uid, EntityUid light, WeaponAttachmentComponent component)
     {

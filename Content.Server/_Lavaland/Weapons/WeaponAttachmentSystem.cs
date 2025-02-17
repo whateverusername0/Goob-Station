@@ -1,9 +1,9 @@
+using Content.Server.Kitchen.Components;
 using Content.Shared._Lavaland.Weapons;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Toggleable;
 using Content.Shared.Light;
 using Content.Shared.Light.Components;
-
 
 namespace Content.Server._Lavaland.Weapons;
 
@@ -18,6 +18,9 @@ public sealed class WeaponAttachmentSystem : SharedWeaponAttachmentSystem
 
         SubscribeLocalEvent<WeaponAttachmentComponent, ToggleActionEvent>(OnToggleLight);
     }
+
+    protected override void AddSharp(EntityUid uid) => EnsureComp<SharpComponent>(uid);
+    protected override void RemSharp(EntityUid uid) => RemCompDeferred<SharpComponent>(uid);
 
     private void OnToggleLight(EntityUid uid, WeaponAttachmentComponent component, ToggleActionEvent args)
     {
