@@ -2,7 +2,7 @@
   name: proto-kinetic shotgun
   id: WeaponProtoKineticShotgun
   parent: [WeaponProtoKineticAcceleratorBase, BaseCargoContraband]
-  description: Fires a spread of low-damage kinetic bolts at a short range.
+  description: Fires a spread of low-damage kinetic bolts.
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Basic/kinetic_accelerator.rsi
@@ -39,7 +39,7 @@
   name: proto-kinetic repeater
   id: WeaponProtoKineticRepeater
   parent: [WeaponProtoKineticAcceleratorBase, BaseCargoContraband]
-  description: Fires a spread of low-damage kinetic bolts at a short range.
+  description: Fires a barrage of kinetic bolts at a short range.
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Basic/kinetic_accelerator.rsi
@@ -59,11 +59,10 @@
       visible: false
       map: [ "empty-icon" ]
   - type: Gun
-    fireRate: 2.5 #goobstation
+    fireRate: 2.5
     selectedMode: SemiAuto
-    #angleDecay: 45 # Lavaland Change
-    minAngle: 10 # Lavaland Change
-    maxAngle: 30 # Lavaland Change
+    minAngle: 10
+    maxAngle: 30
     projectileSpeed: 30
     availableModes:
     - SemiAuto
@@ -87,7 +86,7 @@
   name: proto-kinetic pistol
   id: WeaponProtoKineticPistol
   parent: [WeaponProtoKineticAcceleratorBase, BaseCargoContraband]
-  description: Fires low-damage kinetic bolts at a short range.
+  description: Fires low-damage kinetic bolts, has a higher mod capacity.
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Basic/kinetic_accelerator.rsi
@@ -115,3 +114,14 @@
     whitelist:
       tags:
       - PKAUpgrade
+
+# Lavaland Change
+- type: entity
+  id: ActionTogglePKALight
+  name: action-name-toggle-pka-light
+  description: action-description-toggle-pka-light
+  components:
+  - type: InstantAction
+    useDelay: 0.5
+    icon: { sprite: Objects/Tools/seclite.rsi, state: seclite }
+    event: !type:ToggleActionEvent

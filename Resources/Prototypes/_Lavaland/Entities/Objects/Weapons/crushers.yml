@@ -131,7 +131,7 @@
   parent: LavalandWeaponKineticBase
   id: LavalandWeaponKineticClaws
   name: kinetic claws
-  description: Unleash your inner edgelord with this one-handed claw small enough to fit in your backpack. Deals a paltry 45 damage on mark detonation, but sports a massive 120 damage backstab bonus.
+  description: Unleash your inner edgelord with this one-handed claw small enough to fit in your backpack. Deals a lot more damage when backstabbing marked targets.
   components:
   - type: Sprite
     sprite: _Lavaland/Objects/Weapons/Crushers/crusher_claws.rsi
@@ -167,7 +167,7 @@
   parent: LavalandWeaponKineticBase
   id: LavalandWeaponKineticMachete
   name: kinetic machete
-  description: A smaller, one-handed variant of the crusher. Deals bonus damage if you make a hit from behind.
+  description: A smaller, one-handed variant of the crusher which allows you to block attacks.
   components:
   - type: Sprite
     sprite: _Lavaland/Objects/Weapons/Crushers/crusher_machete.rsi
